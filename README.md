@@ -1,9 +1,10 @@
 # AI-Based Detection of Cyber Threats in Unidirectional IP Traffic
 
-[![CI Pipeline](https://github.com/rohanuser77/cyber-threat-detector/actions/workflows/tests.yml/badge.svg)](.github/workflows/tests.yml)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ntro-threat-detector.streamlit.app/)
+[![Streamlit App](https://img.shields.io/badge/Streamlit_SOC-Live_Console-FF4B4B?style=flat&logo=streamlit&logoColor=white)](https://ntro-threat-detector.streamlit.app/)
+[![CI Pipeline](https://github.com/rohanuser77/cyber-threat-detector/actions/workflows/tests.yml/badge.svg)](https://github.com/rohanuser77/cyber-threat-detector/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
-[![Streamlit](https://img.shields.io/badge/Dashboard-Streamlit_SOC-red.svg)](https://streamlit.io/)
 
 > **Problem Statement ID:** 26145  
 > **Organization:** National Technical Research Organisation (NTRO)  
