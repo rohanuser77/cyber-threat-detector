@@ -1,6 +1,6 @@
 # AI-Based Detection of Cyber Threats in Unidirectional IP Traffic
 
-[![CI Pipeline](https://github.com/organization/unidirectional-cyber-threat-detector/actions/workflows/tests.yml/badge.svg)](.github/workflows/tests.yml)
+[![CI Pipeline](https://github.com/rohanuser77/cyber-threat-detector/actions/workflows/tests.yml/badge.svg)](.github/workflows/tests.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
 [![Streamlit](https://img.shields.io/badge/Dashboard-Streamlit_SOC-red.svg)](https://streamlit.io/)
