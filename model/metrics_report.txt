@@ -1,0 +1,51 @@
+================================================================================
+NTRO PS #26145 - AI-BASED CYBER THREAT DETECTION IN UNIDIRECTIONAL IP TRAFFIC
+MODEL EVALUATION & BENCHMARK REPORT
+================================================================================
+
+Evaluated Test Samples: 2000
+Overall Test Accuracy:  99.80%
+Macro F1-Score:         0.9971
+Weighted F1-Score:      0.9980
+
+--------------------------------------------------------------------------------
+Classification Report by Threat Class:
+--------------------------------------------------------------------------------
+                   precision    recall  f1-score   support
+
+    botnet_beacon     1.0000    1.0000    1.0000       166
+             ddos     0.9873    1.0000    0.9936       156
+          dga_dns     1.0000    1.0000    1.0000       162
+encrypted_malware     1.0000    0.9803    0.9900       152
+     exfiltration     0.9938    1.0000    0.9969       160
+           normal     0.9990    0.9990    0.9990      1035
+        port_scan     1.0000    1.0000    1.0000       169
+
+         accuracy                         0.9980      2000
+        macro avg     0.9972    0.9970    0.9971      2000
+     weighted avg     0.9980    0.9980    0.9980      2000
+
+--------------------------------------------------------------------------------
+Confidence Score Distribution (predict_proba):
+--------------------------------------------------------------------------------
+  Mean Confidence:   0.9852
+  Median Confidence: 1.0000
+  Min Confidence:    0.3529
+  Max Confidence:    1.0000
+  Severity Breakdown: Low (<0.60): 7, Medium (0.60-0.85): 44, High (>0.85): 1949
+
+--------------------------------------------------------------------------------
+Feature Importances:
+--------------------------------------------------------------------------------
+  - byte_count                  : 0.1796
+  - outbound_inbound_byte_ratio : 0.1529
+  - inter_arrival_variance      : 0.1325
+  - packet_count                : 0.1183
+  - unique_dst_ports_per_src    : 0.0919
+  - duration                    : 0.0907
+  - dns_entropy                 : 0.0893
+  - flow_packets_per_sec        : 0.0541
+  - dns_query_length            : 0.0492
+  - proto_TCP                   : 0.0159
+  - proto_UDP                   : 0.0147
+  - flow_bytes_per_sec          : 0.0110

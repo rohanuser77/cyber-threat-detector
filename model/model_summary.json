@@ -1,0 +1,21 @@
+{
+  "accuracy": 0.998,
+  "macro_f1": 0.9971,
+  "weighted_f1": 0.998,
+  "test_samples": 2000,
+  "classes": [
+    "botnet_beacon",
+    "ddos",
+    "dga_dns",
+    "encrypted_malware",
+    "exfiltration",
+    "normal",
+    "port_scan"
+  ],
+  "avg_confidence": 0.9852,
+  "severity_counts": {
+    "High": 1949,
+    "Medium": 44,
+    "Low": 7
+  }
+}

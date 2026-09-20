@@ -1,0 +1,14 @@
+[
+  "packet_count",
+  "byte_count",
+  "duration",
+  "flow_bytes_per_sec",
+  "flow_packets_per_sec",
+  "unique_dst_ports_per_src",
+  "inter_arrival_variance",
+  "dns_query_length",
+  "dns_entropy",
+  "outbound_inbound_byte_ratio",
+  "proto_TCP",
+  "proto_UDP"
+]
