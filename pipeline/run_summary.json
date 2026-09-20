@@ -1,0 +1,23 @@
+{
+  "total_flows_processed": 2000,
+  "total_alerts": 990,
+  "measured_throughput_flows_per_sec": 1515.94,
+  "avg_confidence_score": 0.9897,
+  "run_started_at": "2026-09-20T20:07:51.275829",
+  "run_completed_at": "2026-09-20T20:07:52.595128",
+  "dataset_source": "Plausible Synthetic Flow Dataset (NTRO PS #26145 Engine)",
+  "replay_status": "COMPLETED",
+  "severity_breakdown": {
+    "Low": 0,
+    "Medium": 21,
+    "High": 969
+  },
+  "threat_class_counts": {
+    "port_scan": 178,
+    "botnet_beacon": 162,
+    "encrypted_malware": 153,
+    "ddos": 169,
+    "dga_dns": 166,
+    "exfiltration": 162
+  }
+}
