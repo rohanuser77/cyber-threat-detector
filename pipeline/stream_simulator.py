@@ -79,11 +79,13 @@ def extract_evidence(row: pd.Series, threat_class: str) -> Dict[str, Any]:
 def read_flow_chunks(
     csv_path: Path,
     chunk_size: int = 150,
-    max_records: Optional[int] = None
+    max_records: Optional[int] = None,
+    filter_label: Optional[str] = None
 ) -> Generator[pd.DataFrame, None, None]:
     """
     Reads flow records incrementally in bounded chunk sizes from disk without
-    retaining the entire dataset in memory.
+    retaining the entire dataset in memory. Optionally filters for a specific label
+    (e.g., 'normal' for baseline traffic tests, or a specific threat class).
     """
     if not csv_path.exists():
         raise FileNotFoundError(f"Dataset not found at {csv_path}")
@@ -91,6 +93,11 @@ def read_flow_chunks(
     records_read = 0
     # Stream in chunks
     for chunk in pd.read_csv(csv_path, chunksize=chunk_size):
+        if filter_label is not None:
+            chunk = chunk[chunk["label"] == filter_label]
+            if chunk.empty:
+                continue
+
         if max_records is not None and records_read + len(chunk) > max_records:
             remaining = max_records - records_read
             if remaining > 0:
@@ -115,7 +122,9 @@ def run_stream_simulator(
     batch_size: int = 100,
     batch_delay_sec: float = 0.02,
     max_records: Optional[int] = None,
-    reset_alerts: bool = True
+    reset_alerts: bool = True,
+    filter_label: Optional[str] = None,
+    scenario_name: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Incremental streaming replay and detection engine.
@@ -157,13 +166,19 @@ def run_stream_simulator(
     # Processing state
     total_flows = 0
     total_alerts = 0
+    total_normal = 0
     confidence_sum = 0.0
     start_wall_time = time.time()
     run_started_at = datetime.datetime.now().isoformat()
 
     summary_data: Dict[str, Any] = {
+        "scenario": scenario_name or (filter_label if filter_label else "all_traffic"),
+        "target_label_filter": filter_label,
         "total_flows_processed": 0,
+        "normal_flows_count": 0,
+        "suspicious_flows_count": 0,
         "total_alerts": 0,
+        "elapsed_time_sec": 0.0,
         "measured_throughput_flows_per_sec": 0.0,
         "avg_confidence_score": 0.0,
         "run_started_at": run_started_at,
@@ -175,11 +190,11 @@ def run_stream_simulator(
     }
     update_summary_file(summary_file, summary_data)
 
-    print(f"[*] Starting streaming replay from {csv_path.name}...")
+    print(f"[*] Starting streaming replay from {csv_path.name} (Filter: {filter_label or 'None'})...")
     print(f"[*] Batch size: {batch_size}, Artificial Delay: {batch_delay_sec}s per batch")
 
     try:
-        for chunk_df in read_flow_chunks(csv_path, chunk_size=batch_size, max_records=max_records):
+        for chunk_df in read_flow_chunks(csv_path, chunk_size=batch_size, max_records=max_records, filter_label=filter_label):
             chunk_len = len(chunk_df)
             if chunk_len == 0:
                 continue
@@ -218,6 +233,8 @@ def run_stream_simulator(
                         "evidence": extract_evidence(row, p_class)
                     }
                     alert_lines.append(json.dumps(alert_record) + "\n")
+                else:
+                    total_normal += 1
 
             # Increment counters
             total_flows += chunk_len
@@ -233,7 +250,10 @@ def run_stream_simulator(
             avg_conf = round(confidence_sum / total_alerts, 4) if total_alerts > 0 else 0.0
 
             summary_data["total_flows_processed"] = total_flows
+            summary_data["normal_flows_count"] = total_normal
+            summary_data["suspicious_flows_count"] = total_alerts
             summary_data["total_alerts"] = total_alerts
+            summary_data["elapsed_time_sec"] = round(elapsed, 3)
             summary_data["measured_throughput_flows_per_sec"] = throughput
             summary_data["avg_confidence_score"] = avg_conf
 
@@ -247,12 +267,16 @@ def run_stream_simulator(
         summary_data["replay_status"] = "COMPLETED"
         summary_data["run_completed_at"] = datetime.datetime.now().isoformat()
         total_elapsed = max(0.001, time.time() - start_wall_time)
+        summary_data["elapsed_time_sec"] = round(total_elapsed, 3)
         summary_data["measured_throughput_flows_per_sec"] = round(total_flows / total_elapsed, 2)
         update_summary_file(summary_file, summary_data)
 
         print(f"[+] Streaming Replay Finished Successfully.")
+        print(f"    Scenario: {summary_data['scenario']}")
         print(f"    Total flows processed: {total_flows}")
-        print(f"    Total alerts generated: {total_alerts}")
+        print(f"    Normal flows: {total_normal}")
+        print(f"    Suspicious alerts: {total_alerts}")
+        print(f"    Elapsed time: {summary_data['elapsed_time_sec']}s")
         print(f"    Measured throughput: {summary_data['measured_throughput_flows_per_sec']} flows/sec")
         print(f"    Average confidence: {summary_data['avg_confidence_score']}")
         print(f"    Severity counts: {summary_data['severity_breakdown']}")
