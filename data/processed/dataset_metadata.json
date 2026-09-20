@@ -1,0 +1,16 @@
+{
+  "dataset_source": "Plausible Synthetic Flow Dataset (NTRO PS #26145 Engine)",
+  "raw_files_found": [],
+  "generated_at": "2026-09-20T20:06:56.050146",
+  "total_records": 10000,
+  "class_distribution": {
+    "normal": 5176,
+    "port_scan": 846,
+    "botnet_beacon": 830,
+    "dga_dns": 807,
+    "exfiltration": 802,
+    "ddos": 781,
+    "encrypted_malware": 758
+  },
+  "provenance_note": "Generated using statistical distributions modeled on realistic attack signatures (DDoS floods, port scans, periodic C2 beaconing, DGA entropy, encrypted anomalies, exfiltration). Simulates a passive data diode monitoring enclave without payload decryption."
+}
